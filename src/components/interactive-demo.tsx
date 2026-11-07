@@ -122,7 +122,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
     event.preventDefault();
     const text = query.toLowerCase();
     if (!text.trim()) {
-      setToast("Kuch type karo na, bhai 🙂");
+      setToast("Add a clue first, bhai 🙂");
       return;
     }
 
@@ -137,7 +137,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
 
     if (!scored || scored.score === 0) {
       setSubmitted(false);
-      setToast("Is demo mein nahi mila—ek sample try karo!");
+      setToast("Not in this demo—try a sample instead!");
       return;
     }
 
@@ -148,11 +148,11 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
   function toggleSaved() {
     if (isSaved) {
       setSavedIds((current) => current.filter((id) => id !== activeMemory.id));
-      setToast("Demo se unsave kar diya.");
+      setToast("Removed from this demo.");
       return;
     }
     setSavedIds((current) => [...current, activeMemory.id]);
-    setToast("Save ho gaya, bhai! Demo mein hi hai, haan.");
+    setToast("Saved, bhai! Just in this demo, though.");
   }
 
   return (
@@ -160,7 +160,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
       <div className="memory-demo-top">
         <div>
           <span className="memory-demo-kicker"><span className="memory-demo-mark" /> YOUR FUTURE MEMORY</span>
-          <h3>{compact ? "Kya dhoondh rahe ho?" : "Chalo, yaad taaza karte hain."}</h3>
+          <h3>{compact ? "What are you looking for?" : "Let’s jog your memory."}</h3>
         </div>
         <ConceptLabel />
       </div>
@@ -186,7 +186,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
       </form>
 
       <div className="memory-suggestions" aria-label="Sample search suggestions">
-        <span className="memory-suggestions-label">Yaad hai? Try this:</span>
+        <span className="memory-suggestions-label">Need a hint? Try this:</span>
         {suggestions.map((memory) => (
           <button
             type="button"
@@ -217,7 +217,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
               aria-pressed={category === item}
               key={item}
             >
-              {item === "All" ? "Sab" : item === "Places" ? "Spots" : item}
+              {item === "All" ? "All" : item === "Places" ? "Spots" : item}
             </button>
           ))}
           <span className="memory-category-hint">{filteredMemories.length} sample {filteredMemories.length === 1 ? "memory" : "memories"}</span>
@@ -271,9 +271,9 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
       <div className="memory-demo-footer">
         <span className={`demo-feedback${submitted ? " demo-feedback--active" : ""}`}>
           <span aria-hidden="true" />
-          {submitted ? "Haan ji, sample library mein mil gaya." : "Kuch yaad hai? Ek sample try karo."}
+          {submitted ? "Found it in the sample library. Mil gaya!" : "Remember a detail? Try a sample."}
         </span>
-        <span>DEMO HAI · AI NAHI · ACCOUNT NAHI</span>
+        <span>DEMO ONLY · NO AI · NO ACCOUNT</span>
       </div>
       <AnimatePresence>
         {toast && (
@@ -296,7 +296,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
           animate={{ opacity: 1, height: "auto" }}
           aria-live="polite"
         >
-          Waah! {savedIds.length} sample {savedIds.length === 1 ? "memory hai" : "memories hain"}—sirf is demo mein.
+          Nice! {savedIds.length} sample {savedIds.length === 1 ? "memory" : "memories"} saved—sirf is demo mein.
         </motion.p>
       )}
       <AnimatePresence>
@@ -328,10 +328,10 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
               <h2 id="memory-dialog-title">{activeMemory.title}</h2>
               <p>{activeMemory.summary}</p>
               <div className="memory-dialog-note">
-                Ye ek sample preview hai. Koi Reel play ya analyse nahi ho rahi.
+                Just a sample preview—koi Reel is being played or analysed.
               </div>
               <button className="button button-primary memory-dialog-action" type="button" onClick={() => { if (!isSaved) toggleSaved(); setDialogOpen(false); }}>
-                {isSaved ? "Ho gaya, boss" : "Yaad rakh lo"} <Bookmark size={16} aria-hidden="true" />
+                {isSaved ? "All set, boss" : "Save this memory"} <Bookmark size={16} aria-hidden="true" />
               </button>
             </motion.section>
           </motion.div>

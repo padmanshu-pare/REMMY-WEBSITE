@@ -14,16 +14,16 @@ export default function HowItWorksPage() {
     <main>
       <PageIntro
         eyebrow="The REMMY journey"
-        title="Chaar taps. Scene clear."
-        description="Dekho kaise ek saved Reel ko baad mein dhoondhna thoda easy ho sakta hai."
-        note="Abhi sirf product demo hai"
+        title="Four taps. Scene clear."
+        description="See how a saved Reel could be easier to find later—bas, no endless scrolling."
+        note="A product demo, for now"
       />
       <section className="content-section workflow-section">
         <div className="container">
           <InteractiveSteps />
           <p className="workflow-footnote">
-            Reel ka link milne se video, audio ya caption ka access pakka nahi hota.
-            Aur haan—ye demo Instagram content process nahi karta.
+            A Reel link doesn&apos;t guarantee access to its video, audio or
+            caption. Also, this demo does not process Instagram content.
           </p>
         </div>
       </section>

@@ -1,9 +1,9 @@
 "use client";
 
 const prompts = [
-  { className: "floating-prompt floating-prompt--pasta", label: "wo pasta wali 🍝", query: "That creamy pasta recipe" },
+  { className: "floating-prompt floating-prompt--pasta", label: "that pasta Reel 🍝", query: "That creamy pasta recipe" },
   { className: "floating-prompt floating-prompt--cafe", label: "café kidhar tha? ☕", query: "The café with wooden interiors" },
-  { className: "floating-prompt floating-prompt--coding", label: "coding ka jugaad 💻", query: "That coding tutorial I saved" },
+  { className: "floating-prompt floating-prompt--coding", label: "that coding tip 💻", query: "That coding tutorial I saved" },
 ];
 
 export function FloatingMemoryPrompts() {

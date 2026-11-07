@@ -9,24 +9,24 @@ export const metadata: Metadata = {
 };
 
 const questions = [
-  ["REMMY kya hai?", "Ek product idea jo useful Reels ko save karne, samajhne aur baad mein yaad se dhoondhne ko easy banane ki soch raha hai. Abhi live service nahi hai."],
-  ["Password bhool gaya—reset kaise karun?", "Abhi reset nahi ho sakta, kyunki accounts live hi nahi hain. Login page bas ek preview hai."],
-  ["REMMY kaise kaam karega?", "Idea ye hai: Reel ka reference save karo, jo info access ho sake usse organise karo, phir jo yaad hai woh likh ke dhoondo. Abhi product vision hi hai."],
-  ["Aaj Instagram Reels save kar sakta hoon?", "Is website se nahi. Reel save karna aur accounts abhi bana hi nahi hai."],
-  ["Har Reel ko automatically samajh lega?", "Nahi pakka nahi. Link se video, audio, caption ya transcript ka access guaranteed nahi hota. Future mein bhi access aur permissions pe depend karega."],
-  ["Natural language se saves search kar sakta hoon?", "Ye REMMY ka main goal hai, par real search abhi live nahi. Homepage demo mein sirf sample cards hain."],
-  ["REMMY free hai?", "Pricing abhi decide ya announce nahi hui. Is website pe paid plan nahi hai."],
-  ["Mera saved content private hai?", "Is site pe saved content ya accounts accept/process nahi hote, aur analytics service connected nahi hai. Accounts ya content processing launch hone se pehle privacy details share hongi."],
-  ["Aur platforms bhi support honge?", "Abhi focus Instagram Reels pe hai. Baaki platforms future ka open question hain—current integration nahi."],
+  ["What is REMMY?", "REMMY is an independent product idea for saving useful Reels and finding them later from a natural-language description. It is not a live service yet."],
+  ["Password bhool gaya—can I reset it?", "Not yet—accounts aren’t live, so there’s no reset service. The login page is just a preview."],
+  ["How will REMMY work?", "The idea is to save a Reel reference, organise whatever information is available, then search by describing what you remember. Abhi product vision hi hai."],
+  ["Can I save Instagram Reels with REMMY today?", "Not through this website. Reel saving and account features are not available yet."],
+  ["Will REMMY automatically understand every Reel?", "No guarantees. A URL does not always provide access to the original video, audio, caption or transcript. Any future understanding would depend on access and permissions."],
+  ["Can I search my saves using natural language?", "That’s a core product goal, but there is no live search service yet. The homepage demo uses sample cards only—bas sample data."],
+  ["Is REMMY free?", "Pricing has not been decided or announced. There are no paid plans on this website."],
+  ["Is my saved content private?", "This website does not accept or process saved content, and it has no account or analytics service integrated. Full privacy details will be shared before accounts or content processing launch."],
+  ["Will REMMY support other platforms?", "Instagram Reels are the initial focus. Support for other platforms is a future possibility, not a current integration."],
 ];
 
 export default function FAQPage() {
   return (
     <main>
       <PageIntro
-        eyebrow="Seedhi baat"
-        title="Sawaal poochho. Clear jawab lo."
-        description="REMMY abhi early stage pe hai, toh jo live hai aur jo sirf idea hai—dono clear rakhenge."
+        eyebrow="The straight-up answers"
+        title="Good questions deserve clear answers."
+        description="REMMY is at an early stage, so we keep the product vision separate from what’s available today."
       />
       <section className="content-section">
         <div className="content-narrow faq-list">

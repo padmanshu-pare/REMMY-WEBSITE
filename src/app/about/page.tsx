@@ -14,47 +14,48 @@ export default function AboutPage() {
   return (
     <main>
       <PageIntro
-        eyebrow="Ek kaafi familiar problem"
-        title="Save toh kiya. Ab milega kahan?"
-        description="Useful Reel save ki, phir woh saves ke jungle mein gayab. REMMY ka idea: jo yaad hai, usi se wapas dhoondo."
+        eyebrow="A familiar little problem"
+        title="Saved it. Now where was it?"
+        description="You save a useful Reel, then it disappears into a forest of saves. REMMY’s idea: find it again by remembering what it was about."
       />
       <section className="content-section">
         <div className="content-narrow">
           <Reveal>
-            <Eyebrow>Save karna easy. Dhoondhna—uff.</Eyebrow>
-            <h2>Itna scroll kaun karega?</h2>
+            <Eyebrow>Saving is easy. Finding it? Uff.</Eyebrow>
+            <h2>Who has time to scroll forever?</h2>
             <p>
-              Saves mein tutorials, recipes, spots—sab mix. Creator ka naam
-              gaya, caption gaya. Bas idea yaad hai. Haan, wahi toh.
+              Your saves fill up with tutorials, recipes and places. The
+              creator’s name? Gone. The caption? Also gone. Bas, the idea sticks.
             </p>
             <p>
-              REMMY ek independent product idea hai: jo yaad hai woh bolo, aur
-              useful cheez tak wapas jao.
+              REMMY is an independent product idea: describe what you remember
+              and get back to the useful thing you saved.
             </p>
           </Reveal>
           <Reveal>
             <div className="memory-card" style={{ minHeight: 270, margin: "48px 0" }}>
               <span className="memory-label">The REMMY philosophy</span>
               <p className="display-heading" style={{ maxWidth: 560, padding: "30px", textAlign: "center" }}>
-                Yaad se dhoondo, folder ke naam se nahi.
+                Find it from a memory, not a folder name.
               </p>
               <span className="memory-caption">SAVE TODAY. FIND TOMORROW.</span>
             </div>
           </Reveal>
           <Reveal>
-            <Eyebrow>Curiosity rakho, scroll kam</Eyebrow>
-            <h2>Kaam ki cheez, kaam ke time.</h2>
+            <Eyebrow>Stay curious. Scroll less.</Eyebrow>
+            <h2>Useful things, right when you need them.</h2>
             <p>
-              Pehla focus Instagram Reels hain—tips, recipes, spots aur
-              recommendations ke liye. Badi soch? Useful discoveries ko useful
-              hi rehne dena.
+              The first focus is Instagram Reels—a familiar place for tips,
+              recipes, places and recommendations. Badi soch? Keep useful
+              discoveries useful.
             </p>
             <p>
-              Abhi REMMY ban raha hai. Is site pe live account, real search ya
-              Reel processing nahi hai. Jo nahi hai, uska fake flex bhi nahi.
+              REMMY is still taking shape. This site has no live accounts, real
+              search or Reel processing. No fake flex about features that
+              aren&apos;t here yet.
             </p>
             <Link className="text-link" href="/how-it-works">
-              Product ka scene dekho <ArrowRight size={16} aria-hidden="true" />
+              See how the idea works <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </Reveal>
         </div>
@@ -62,13 +63,13 @@ export default function AboutPage() {
       <section className="section section-cta">
         <Reveal className="container">
           <CallToAction
-            eyebrow="Aaj save. Kal dhoondo."
-            title="Kal wala-you bolega, thanks."
-            text="Dekho REMMY ka idea kya hai."
+            eyebrow="Save today. Find tomorrow."
+            title="Future-you will say thanks."
+            text="Take a look at the idea behind REMMY."
             primaryHref="/how-it-works"
-            primaryLabel="Kaise kaam karega?"
+            primaryLabel="How it works"
             secondaryHref="/contact"
-            secondaryLabel="Baat karte hain"
+            secondaryLabel="Get in touch"
           />
         </Reveal>
       </section>

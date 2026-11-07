@@ -6,45 +6,45 @@ import { useEffect, useState } from "react";
 
 const featureList = [
   {
-    title: "Yaad se dhoondo",
+    title: "Find it from a small clue",
     category: "Search",
-    description: "Jo yaad aa raha hai woh type karo. Folder ka naam yaad rakhne ka scene hi nahi.",
-    example: "“Woh wooden tables wala cute café...”",
+    description: "Describe the detail, topic or feeling you remember. Folder names? Zaroori nahi.",
+    example: "“That cute café with the wooden tables...”",
     icon: Search,
   },
   {
-    title: "Kaam ki baat samjho",
+    title: "Kaam ki baat, made easy",
     category: "Understanding",
-    description: "Content access mila toh useful bits ko dhoondhna easy ho sakta hai.",
-    example: "Short note, original Reel ke saath. Sorted.",
+    description: "When content is available, make the useful details easy to revisit. Bas, no rewatching everything.",
+    example: "A quick note with the original Reel. Sorted.",
     icon: Brain,
   },
   {
-    title: "Har cheez ki jagah",
+    title: "Give every idea a place",
     category: "Organisation",
-    description: "Categories aur tags—taaki sab kuch ek hi pile mein na ho.",
-    example: "Coding · Algorithms · JavaScript. Bas.",
+    description: "Use categories and tags, taaki sab kuch ek hi pile mein na ho.",
+    example: "Coding · Algorithms · JavaScript",
     icon: Tags,
   },
   {
     title: "Apni mini library",
     category: "Library",
-    description: "Links aur context ko saath rakho. Baad wala-you thanks bolega.",
-    example: "Recipes, spots, tools—sab apna.",
+    description: "Keep links and context together. Future-you will thank you—pakka.",
+    example: "Recipes, places, tools—all in one place.",
     icon: BookOpen,
   },
   {
-    title: "Short version, please",
+    title: "The short version, please",
     category: "Summaries",
-    description: "Har Reel ko phir se dekhne ka time nahi? Main point paas rakho.",
-    example: "Idea chhota sa, link bilkul paas.",
+    description: "No time to replay every Reel? Keep the main point close by.",
+    example: "The key idea, with the link right there.",
     icon: Layers3,
   },
   {
-    title: "Apna note bhi jodo",
+    title: "Add your own context",
     category: "Collections",
-    description: "Apni yaad, apna context—ideas ko ek saath le aao.",
-    example: "“Next pasta night pe ye try karna.”",
+    description: "Add your own notes and bring related ideas together. Apna context, apni marzi.",
+    example: "“Try this next time I make pasta.”",
     icon: NotebookPen,
   },
 ];
@@ -119,7 +119,7 @@ export function FeatureExplorer() {
             <h2>{active.title}</h2>
             <p>{active.description}</p>
             <blockquote>{active.example}</blockquote>
-            <span className="feature-plan-note">REMMY ka idea hai—abhi live feature nahi.</span>
+            <span className="feature-plan-note">Still a product idea—not live just yet.</span>
           </motion.div>
         </AnimatePresence>
       </div>
