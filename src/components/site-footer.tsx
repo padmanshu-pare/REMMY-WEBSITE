@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -34,8 +35,11 @@ export function SiteFooter() {
       <div className="container footer-main">
         <div className="footer-brand">
           <Link className="brand-lockup" href="/" aria-label="REMMY home">
-            <span className="brand-word">REMMY</span>
-            <span className="brand-tagline">SAVE TODAY. FIND TOMORROW.</span>
+            <Image className="brand-mascot" src="/remmy-koala.png" alt="" width={44} height={44} />
+            <span className="brand-copy">
+              <span className="brand-word">REMMY</span>
+              <span className="brand-tagline">SAVE TODAY. FIND TOMORROW.</span>
+            </span>
           </Link>
           <p>Save the useful stuff. Find it by what you remember. Bas, endless scrolling bye.</p>
         </div>

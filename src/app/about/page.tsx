@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { CallToAction, Eyebrow, PageIntro } from "@/components/site-ui";
@@ -35,10 +36,13 @@ export default function AboutPage() {
           <Reveal>
             <div className="memory-card" style={{ minHeight: 270, margin: "48px 0" }}>
               <span className="memory-label">The REMMY philosophy</span>
-              <p className="display-heading" style={{ maxWidth: 560, padding: "30px", textAlign: "center" }}>
-                Find it from a memory, not a folder name.
-              </p>
-              <span className="memory-caption">SAVE TODAY. FIND TOMORROW.</span>
+              <Image
+                className="about-brand-image"
+                src="/remmy-brand.png"
+                alt="REMMY koala mascot with the Save today. Find tomorrow. tagline"
+                width={768}
+                height={768}
+              />
             </div>
           </Reveal>
           <Reveal>

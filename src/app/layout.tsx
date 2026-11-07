@@ -30,12 +30,14 @@ export const metadata: Metadata = {
     title: "REMMY — Save today. Find tomorrow.",
     description:
       "A new way to remember the useful things you save. Search by what you remember, not where you saved it.",
+    images: [{ url: "/remmy-brand.png", width: 768, height: 768, alt: "REMMY koala bookmark mascot and logo" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "REMMY — Save today. Find tomorrow.",
     description:
       "A new way to remember the useful things you save. Search by what you remember, not where you saved it.",
+    images: ["/remmy-brand.png"],
   },
 };
 

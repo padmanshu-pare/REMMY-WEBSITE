@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
@@ -33,8 +34,11 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="container nav-wrap">
         <Link className="brand-lockup" href="/" aria-label="REMMY home">
-          <span className="brand-word">REMMY</span>
-          <span className="brand-tagline">SAVE TODAY. FIND TOMORROW.</span>
+          <Image className="brand-mascot" src="/remmy-koala.png" alt="" width={44} height={44} priority />
+          <span className="brand-copy">
+            <span className="brand-word">REMMY</span>
+            <span className="brand-tagline">SAVE TODAY. FIND TOMORROW.</span>
+          </span>
         </Link>
         <nav className="desktop-nav" aria-label="Main navigation">
           {navigation.map((item) => (
