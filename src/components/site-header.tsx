@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -15,6 +16,7 @@ const navigation = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -63,30 +65,37 @@ export function SiteHeader() {
           {menuOpen ? <X size={21} /> : <Menu size={21} />}
         </button>
       </div>
-      <nav
-        className="mobile-nav"
-        id="mobile-navigation"
-        aria-label="Mobile navigation"
-        hidden={!menuOpen}
-      >
-        {navigation.map((item) => (
-          <Link
-            className="mobile-nav-link"
-            href={item.href}
-            key={item.href}
-            aria-current={pathname === item.href ? "page" : undefined}
-            onClick={() => setMenuOpen(false)}
+      <AnimatePresence initial={false}>
+        {menuOpen && (
+          <motion.nav
+            className="mobile-nav"
+            id="mobile-navigation"
+            aria-label="Mobile navigation"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2 }}
           >
-            {item.label}
-          </Link>
-        ))}
-        <Link className="mobile-nav-link" href="/login" onClick={() => setMenuOpen(false)}>
-          Log in
-        </Link>
-        <Link className="button button-primary mobile-nav-cta" href="/signup" onClick={() => setMenuOpen(false)}>
-          Get started <ArrowUpRight size={16} aria-hidden="true" />
-        </Link>
-      </nav>
+            {navigation.map((item) => (
+              <Link
+                className="mobile-nav-link"
+                href={item.href}
+                key={item.href}
+                aria-current={pathname === item.href ? "page" : undefined}
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link className="mobile-nav-link" href="/login" onClick={() => setMenuOpen(false)}>
+              Log in
+            </Link>
+            <Link className="button button-primary mobile-nav-cta" href="/signup" onClick={() => setMenuOpen(false)}>
+              Get started <ArrowUpRight size={16} aria-hidden="true" />
+            </Link>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

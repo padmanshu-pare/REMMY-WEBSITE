@@ -25,6 +25,7 @@ Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SITE_URL` to the canoni
 
 ## Product and launch boundaries
 
+- The home page includes a local, sample-only search/save interaction and the workflow and feature pages have interactive previews. These use static sample data and do not call AI or a backend.
 - Login and sign-up are validated front-end previews. They do not create accounts or send credentials.
 - The contact form is a validated preview. It does not send or store messages.
 - Search results and dashboard cards are illustrative examples, not live product data.
