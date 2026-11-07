@@ -3,6 +3,7 @@ import { ArrowDown, ArrowRight, ArrowUpRight, Bookmark, Layers3, Search } from "
 import Link from "next/link";
 import { InteractiveDemo } from "@/components/interactive-demo";
 import { InteractiveSteps } from "@/components/interactive-steps";
+import { FloatingMemoryPrompts } from "@/components/floating-memory-prompts";
 import { Reveal } from "@/components/reveal";
 import { Eyebrow } from "@/components/site-ui";
 
@@ -15,19 +16,22 @@ export const metadata: Metadata = {
 
 const highlights = [
   {
-    title: "Save with context",
-    description: "Keep the useful idea attached to the thing you saved.",
+    title: "Save karo",
+    description: "Link ke saath useful idea bhi yaad rahe.",
     icon: Bookmark,
+    feature: "library",
   },
   {
-    title: "Organise naturally",
-    description: "Bring recipes, tools, places and ideas into one library.",
+    title: "Thoda organise",
+    description: "Recipes, tools, spots—sab ek jagah.",
     icon: Layers3,
+    feature: "organisation",
   },
   {
-    title: "Find by memory",
-    description: "Describe what stuck with you—not a folder name.",
+    title: "Yaad se dhoondo",
+    description: "Folder ka naam nahi. Bas jo yaad hai woh bolo.",
     icon: Search,
+    feature: "search",
   },
 ];
 
@@ -36,22 +40,25 @@ export default function Home() {
     <main>
       <section className="interactive-hero">
         <div className="hero-glow hero-glow--left" aria-hidden="true" />
+        <div className="hero-scribble hero-scribble--one" aria-hidden="true">✳</div>
+        <div className="hero-scribble hero-scribble--two" aria-hidden="true">✴</div>
         <div className="container interactive-hero-grid">
+          <FloatingMemoryPrompts />
           <Reveal className="interactive-hero-copy">
-            <Eyebrow>Your saves, with a better memory</Eyebrow>
+            <Eyebrow>Arre, save toh kar liya...</Eyebrow>
             <h1>
-              Keep the find.
+              Mil bhi jayega.
               <br />
-              <span>Lose the scroll.</span>
+              <span>Scroll kyun karna?</span>
             </h1>
             <p>
-              REMMY is a fresh take on the things you save. Explore how it could
-              help you find them again.
+              “Woh pasta wali Reel kidhar thi?” Bas yaad se bolo. REMMY ka idea
+              hi yahi hai, bhai.
             </p>
             <Link className="button button-primary" href="#try-it">
-              Try the demo <ArrowDown size={17} aria-hidden="true" />
+              Chalo, demo dekho <ArrowDown size={17} aria-hidden="true" />
             </Link>
-            <span className="hero-demo-note">A playful preview · no account needed</span>
+            <span className="hero-demo-note">Demo hai, asli search nahi—chill.</span>
           </Reveal>
           <Reveal className="hero-demo-wrap" delay={0.1}>
             <InteractiveDemo compact />
@@ -65,9 +72,9 @@ export default function Home() {
       <section className="interactive-demo-section" id="try-it">
         <div className="container">
           <Reveal className="interactive-section-heading">
-            <Eyebrow>Go on, find something</Eyebrow>
-            <h2>Search your memory.</h2>
-            <p>Pick a thought. Save a sample. See how the pieces come together.</p>
+            <Eyebrow>Chal, dhoondh ke dikha</Eyebrow>
+            <h2>Kya yaad aa raha hai?</h2>
+            <p>Type karo, sample chuno, phir save dabao. Bas, scene set.</p>
           </Reveal>
           <InteractiveDemo />
         </div>
@@ -76,11 +83,11 @@ export default function Home() {
       <section className="interactive-steps-section" id="how-it-works">
         <div className="container interactive-steps-grid">
           <Reveal>
-            <Eyebrow>A few easy steps</Eyebrow>
-            <h2>From “save this” to “there it is.”</h2>
-            <p>Tap through the idea behind REMMY.</p>
+            <Eyebrow>Itna bhi complicated nahi</Eyebrow>
+            <h2>Save kiya. Ab mil bhi gaya.</h2>
+            <p>Chaar steps, ekdum seedha.</p>
             <Link className="text-link" href="/how-it-works">
-              See the full journey <ArrowRight size={16} aria-hidden="true" />
+              Aur jaan na hai? <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </Reveal>
           <InteractiveSteps compact />
@@ -90,22 +97,23 @@ export default function Home() {
       <section className="interactive-features-section" id="features">
         <div className="container">
           <Reveal className="interactive-section-heading">
-            <Eyebrow>Less hunting, more remembering</Eyebrow>
-            <h2>A little more than a bookmark.</h2>
+            <Eyebrow>Bookmarks se thoda aage</Eyebrow>
+            <h2>Kaam ki cheez, kaam ke time.</h2>
           </Reveal>
           <div className="interactive-highlight-grid">
-            {highlights.map(({ title, description, icon: Icon }, index) => (
+            {highlights.map(({ title, description, icon: Icon, feature }, index) => (
               <Reveal key={title} delay={index * 0.06}>
-                <article className="interactive-highlight">
+                <Link className="interactive-highlight" href={`/features#feature-${feature}`}>
                   <span className="interactive-highlight-icon"><Icon size={21} strokeWidth={1.7} aria-hidden="true" /></span>
                   <h3>{title}</h3>
                   <p>{description}</p>
-                </article>
+                  <span className="highlight-explore">Dekh na <ArrowUpRight size={15} aria-hidden="true" /></span>
+                </Link>
               </Reveal>
             ))}
           </div>
           <Link className="text-link feature-explore-link" href="/features">
-            Explore all planned features <ArrowUpRight size={16} aria-hidden="true" />
+            Baaki ideas bhi dekho <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
         </div>
       </section>
@@ -113,25 +121,25 @@ export default function Home() {
       <section className="interactive-faq-section" id="faq">
         <div className="container interactive-faq-grid">
           <Reveal>
-            <Eyebrow>Good to know</Eyebrow>
-            <h2>Curious? Fair.</h2>
-            <p>REMMY is a concept in progress. Here are the honest answers.</p>
+            <Eyebrow>Seedhi baat</Eyebrow>
+            <h2>Thode sawaal?</h2>
+            <p>Jo hai woh hai. Jo nahi, woh bhi bata dete hain.</p>
             <Link className="text-link" href="/faq">
-              All the FAQs <ArrowRight size={16} aria-hidden="true" />
+              Saare sawaal idhar <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </Reveal>
           <div className="interactive-faq-list">
             <details className="faq-item">
-              <summary>Can I use REMMY today?<span aria-hidden="true">+</span></summary>
-              <p>Not yet. This site is a product preview; accounts and search are not live.</p>
+              <summary>Abhi use kar sakta hoon?<span aria-hidden="true">+</span></summary>
+              <p>Abhi nahi, bhai. Ye website demo hai; account aur real search abhi live nahi.</p>
             </details>
             <details className="faq-item">
-              <summary>Can REMMY read every Reel?<span aria-hidden="true">+</span></summary>
-              <p>No. Access to a Reel’s video, audio, caption or transcript can vary.</p>
+              <summary>Har Reel samajh lega?<span aria-hidden="true">+</span></summary>
+              <p>Nahi pakka nahi. Reel ka video, audio ya caption access milna zaroori nahi.</p>
             </details>
             <details className="faq-item">
-              <summary>Is this demo using AI?<span aria-hidden="true">+</span></summary>
-              <p>No. It uses a few local sample cards to demonstrate the idea. Nothing is sent to a service.</p>
+              <summary>Demo mein AI chal raha hai?<span aria-hidden="true">+</span></summary>
+              <p>Nahi ji. Bas sample cards hain; kuch bhi kahin send nahi ho raha.</p>
             </details>
           </div>
         </div>
@@ -142,10 +150,10 @@ export default function Home() {
           <div className="interactive-cta">
             <div>
               <Eyebrow>SAVE TODAY. FIND TOMORROW.</Eyebrow>
-              <h2>A better place for your “I’ll need that later.”</h2>
+              <h2>“Baad mein dekhunga” ka bhi jugaad.</h2>
             </div>
             <Link className="button button-primary" href="/about">
-              Meet the idea <ArrowUpRight size={17} aria-hidden="true" />
+              REMMY kya hai? <ArrowUpRight size={17} aria-hidden="true" />
             </Link>
           </div>
         </Reveal>

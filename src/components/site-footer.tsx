@@ -37,10 +37,7 @@ export function SiteFooter() {
             <span className="brand-word">REMMY</span>
             <span className="brand-tagline">SAVE TODAY. FIND TOMORROW.</span>
           </Link>
-          <p>
-            A personal memory for the useful things you discover. Search by what
-            you remember, not where you saved it.
-          </p>
+          <p>Kaam ki cheezein save karo. Phir yaad se dhoondo. Bas, endless scroll bye.</p>
         </div>
         {footerLinks.map((group) => (
           <div className="footer-column" key={group.heading}>
@@ -52,8 +49,8 @@ export function SiteFooter() {
         ))}
       </div>
       <div className="container footer-bottom">
-        <span>© REMMY. The idea is just getting started.</span>
-        <span className="footer-note">Made for things worth remembering <ArrowUpRight size={13} aria-hidden="true" /></span>
+        <span>© REMMY. Abhi toh shuruaat hai.</span>
+        <span className="footer-note">Yaad rehne wali cheezon ke liye <ArrowUpRight size={13} aria-hidden="true" /></span>
       </div>
     </footer>
   );

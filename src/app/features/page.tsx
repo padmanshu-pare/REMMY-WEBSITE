@@ -13,10 +13,10 @@ export default function FeaturesPage() {
   return (
     <main>
       <PageIntro
-        eyebrow="A little more than a bookmark"
-        title="Pick an idea. See where it goes."
-        description="Tap through the things REMMY is being designed to make easier."
-        note="Planned product direction · not live features"
+        eyebrow="Bookmarks se thoda aage"
+        title="Koi idea chuno. Aage dekho."
+        description="Tap karke dekho—REMMY kis cheez ko thoda less messy bana sakta hai."
+        note="Abhi product idea hai, live feature nahi"
       />
       <section className="content-section feature-explorer-section">
         <div className="container">

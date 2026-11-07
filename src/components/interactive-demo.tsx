@@ -1,8 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useMemo, useState, type FormEvent } from "react";
-import { ArrowUpRight, Bookmark, Check, Coffee, Code2, Lightbulb, Search, Utensils } from "lucide-react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { ArrowUpRight, Bookmark, Check, Coffee, Code2, Lightbulb, Search, Utensils, X } from "lucide-react";
 import { ConceptLabel } from "@/components/site-ui";
 
 const memories = [
@@ -60,6 +60,8 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
   const [category, setCategory] = useState("All");
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [toast, setToast] = useState("");
   const reduceMotion = useReducedMotion();
 
   const filteredMemories = useMemo(
@@ -73,39 +75,84 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
   const suggestions = (matchingSuggestions.length ? matchingSuggestions : memories).slice(0, 3);
   const isSaved = savedIds.includes(activeMemory.id);
 
+  useEffect(() => {
+    if (!compact) return;
+
+    function onPrompt(event: Event) {
+      const { query: prompt } = (event as CustomEvent<{ query: string }>).detail;
+      const match = memories.find((memory) => memory.query === prompt);
+      if (match) {
+        setActiveMemory(match);
+        setQuery(match.query);
+        setCategory(match.category);
+        setSubmitted(true);
+        setToast("Bas, mil gaya! ✨");
+      }
+      document.getElementById("try-it")?.scrollIntoView({ behavior: reduceMotion ? "instant" : "smooth" });
+    }
+
+    window.addEventListener("remmy:prompt", onPrompt);
+    return () => window.removeEventListener("remmy:prompt", onPrompt);
+  }, [compact, reduceMotion]);
+
+  useEffect(() => {
+    if (!dialogOpen) return;
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setDialogOpen(false);
+    }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [dialogOpen]);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timeout = window.setTimeout(() => setToast(""), 2600);
+    return () => window.clearTimeout(timeout);
+  }, [toast]);
+
   function chooseMemory(memory: (typeof memories)[number]) {
     setActiveMemory(memory);
     setQuery(memory.query);
     setCategory(memory.category);
     setSubmitted(true);
+    setToast("Bas, mil gaya! ✨");
   }
 
   function search(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const text = query.toLowerCase();
-    const match =
-      memories.find((memory) =>
-        [memory.id, memory.category, memory.query, memory.title, memory.summary, ...memory.tags]
-          .some((value) => value.toLowerCase().includes(text.trim()) && text.trim().length > 2),
-      ) ??
-      memories
-        .map((memory) => ({
-          memory,
-          score: [memory.id, memory.category, memory.query, memory.title, memory.summary, ...memory.tags]
-            .flatMap((value) => value.toLowerCase().split(/[^a-z0-9]+/))
-            .filter((word) => word.length > 2 && text.includes(word)).length,
-        }))
-        .sort((left, right) => right.score - left.score)[0]?.memory ??
-      activeMemory;
+    if (!text.trim()) {
+      setToast("Kuch type karo na, bhai 🙂");
+      return;
+    }
+
+    const scored = memories
+      .map((memory) => ({
+        memory,
+        score: [memory.id, memory.category, memory.query, memory.title, memory.summary, ...memory.tags]
+          .flatMap((value) => value.toLowerCase().split(/[^a-z0-9]+/))
+          .filter((word) => word.length > 2 && text.includes(word)).length,
+      }))
+      .sort((left, right) => right.score - left.score)[0];
+
+    if (!scored || scored.score === 0) {
+      setSubmitted(false);
+      setToast("Is demo mein nahi mila—ek sample try karo!");
+      return;
+    }
+
+    const match = scored.memory;
     chooseMemory(match);
   }
 
   function toggleSaved() {
-    setSavedIds((current) =>
-      current.includes(activeMemory.id)
-        ? current.filter((id) => id !== activeMemory.id)
-        : [...current, activeMemory.id],
-    );
+    if (isSaved) {
+      setSavedIds((current) => current.filter((id) => id !== activeMemory.id));
+      setToast("Demo se unsave kar diya.");
+      return;
+    }
+    setSavedIds((current) => [...current, activeMemory.id]);
+    setToast("Save ho gaya, bhai! Demo mein hi hai, haan.");
   }
 
   return (
@@ -113,7 +160,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
       <div className="memory-demo-top">
         <div>
           <span className="memory-demo-kicker"><span className="memory-demo-mark" /> YOUR FUTURE MEMORY</span>
-          <h3>{compact ? "What are you trying to remember?" : "Try a little memory magic."}</h3>
+          <h3>{compact ? "Kya dhoondh rahe ho?" : "Chalo, yaad taaza karte hain."}</h3>
         </div>
         <ConceptLabel />
       </div>
@@ -139,7 +186,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
       </form>
 
       <div className="memory-suggestions" aria-label="Sample search suggestions">
-        <span className="memory-suggestions-label">Try one:</span>
+        <span className="memory-suggestions-label">Yaad hai? Try this:</span>
         {suggestions.map((memory) => (
           <button
             type="button"
@@ -170,7 +217,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
               aria-pressed={category === item}
               key={item}
             >
-              {item}
+              {item === "All" ? "Sab" : item === "Places" ? "Spots" : item}
             </button>
           ))}
           <span className="memory-category-hint">{filteredMemories.length} sample {filteredMemories.length === 1 ? "memory" : "memories"}</span>
@@ -199,15 +246,24 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
                 {activeMemory.tags.map((tag) => <span key={tag}>#{tag}</span>)}
               </div>
             </div>
-            <button
-              type="button"
-              className={`memory-save-button${isSaved ? " memory-save-button--saved" : ""}`}
-              onClick={toggleSaved}
-              aria-pressed={isSaved}
-            >
-              {isSaved ? <Check size={16} /> : <Bookmark size={16} />}
-              <span>{isSaved ? "Saved" : "Save memory"}</span>
-            </button>
+            <div className="memory-result-actions">
+              <button
+                type="button"
+                className="memory-peek-button"
+                onClick={() => setDialogOpen(true)}
+              >
+                Peek inside <ArrowUpRight size={14} aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className={`memory-save-button${isSaved ? " memory-save-button--saved" : ""}`}
+                onClick={toggleSaved}
+                aria-pressed={isSaved}
+              >
+                {isSaved ? <Check size={16} /> : <Bookmark size={16} />}
+                <span>{isSaved ? "Saved" : "Save memory"}</span>
+              </button>
+            </div>
           </motion.article>
         </AnimatePresence>
       </div>
@@ -215,10 +271,24 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
       <div className="memory-demo-footer">
         <span className={`demo-feedback${submitted ? " demo-feedback--active" : ""}`}>
           <span aria-hidden="true" />
-          {submitted ? "Found in this little sample library." : "Choose a thought to see a sample memory."}
+          {submitted ? "Haan ji, sample library mein mil gaya." : "Kuch yaad hai? Ek sample try karo."}
         </span>
-        <span>LOCAL DEMO · NO AI · NO ACCOUNT</span>
+        <span>DEMO HAI · AI NAHI · ACCOUNT NAHI</span>
       </div>
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            className="memory-toast"
+            role="status"
+            initial={{ opacity: 0, y: 12, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+            transition={{ duration: reduceMotion ? 0 : 0.18 }}
+          >
+            <span aria-hidden="true">✦</span>{toast}
+          </motion.div>
+        )}
+      </AnimatePresence>
       {savedIds.length > 0 && (
         <motion.p
           className="saved-memory-note"
@@ -226,9 +296,47 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
           animate={{ opacity: 1, height: "auto" }}
           aria-live="polite"
         >
-          Nice. {savedIds.length} sample {savedIds.length === 1 ? "memory is" : "memories are"} tucked away in this demo.
+          Waah! {savedIds.length} sample {savedIds.length === 1 ? "memory hai" : "memories hain"}—sirf is demo mein.
         </motion.p>
       )}
+      <AnimatePresence>
+        {dialogOpen && (
+          <motion.div
+            className="memory-dialog-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setDialogOpen(false);
+            }}
+          >
+            <motion.section
+              className={`memory-dialog ${activeMemory.art}`}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="memory-dialog-title"
+              initial={{ opacity: 0, y: 18, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.98 }}
+              transition={{ duration: reduceMotion ? 0 : 0.2 }}
+            >
+              <button className="memory-dialog-close" type="button" aria-label="Close memory preview" onClick={() => setDialogOpen(false)} autoFocus>
+                <X size={19} aria-hidden="true" />
+              </button>
+              <div className="memory-dialog-art"><activeMemory.icon size={38} aria-hidden="true" /></div>
+              <span className="memory-result-meta">{activeMemory.category} · SAMPLE REEL</span>
+              <h2 id="memory-dialog-title">{activeMemory.title}</h2>
+              <p>{activeMemory.summary}</p>
+              <div className="memory-dialog-note">
+                Ye ek sample preview hai. Koi Reel play ya analyse nahi ho rahi.
+              </div>
+              <button className="button button-primary memory-dialog-action" type="button" onClick={() => { if (!isSaved) toggleSaved(); setDialogOpen(false); }}>
+                {isSaved ? "Ho gaya, boss" : "Yaad rakh lo"} <Bookmark size={16} aria-hidden="true" />
+              </button>
+            </motion.section>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
