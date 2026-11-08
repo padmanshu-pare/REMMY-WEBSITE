@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { ArrowUpRight, Bookmark, Check, Coffee, Code2, Lightbulb, Search, Utensils, X } from "lucide-react";
 import { ConceptLabel } from "@/components/site-ui";
 
@@ -54,6 +54,10 @@ const memories = [
 
 const categories = ["All", ...memories.map((memory) => memory.category)];
 
+function normalizeSearchText(value: string) {
+  return value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+}
+
 export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
   const [query, setQuery] = useState("");
   const [activeMemory, setActiveMemory] = useState<(typeof memories)[number]>(memories[0]);
@@ -61,6 +65,8 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const dialogTriggerRef = useRef<HTMLButtonElement>(null);
+  const wasDialogOpenRef = useRef(false);
   const [toast, setToast] = useState("");
   const reduceMotion = useReducedMotion();
 
@@ -105,6 +111,15 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
   }, [dialogOpen]);
 
   useEffect(() => {
+    if (dialogOpen) {
+      wasDialogOpenRef.current = true;
+    } else if (wasDialogOpenRef.current) {
+      wasDialogOpenRef.current = false;
+      dialogTriggerRef.current?.focus();
+    }
+  }, [dialogOpen]);
+
+  useEffect(() => {
     if (!toast) return;
     const timeout = window.setTimeout(() => setToast(""), 2600);
     return () => window.clearTimeout(timeout);
@@ -120,7 +135,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
 
   function search(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const text = query.toLowerCase();
+    const text = normalizeSearchText(query);
     if (!text.trim()) {
       setToast("Add a clue first, bhai 🙂");
       return;
@@ -130,7 +145,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
       .map((memory) => ({
         memory,
         score: [memory.id, memory.category, memory.query, memory.title, memory.summary, ...memory.tags]
-          .flatMap((value) => value.toLowerCase().split(/[^a-z0-9]+/))
+          .flatMap((value) => normalizeSearchText(value).split(/[^a-z0-9]+/))
           .filter((word) => word.length > 2 && text.includes(word)).length,
       }))
       .sort((left, right) => right.score - left.score)[0];
@@ -153,6 +168,32 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
     }
     setSavedIds((current) => [...current, activeMemory.id]);
     setToast("Saved, bhai! Just in this demo, though.");
+  }
+
+  function keepDialogFocus(event: ReactKeyboardEvent<HTMLElement>) {
+    if (event.key !== "Tab") return;
+
+    const focusableElements = event.currentTarget.querySelectorAll<HTMLElement>(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (!firstElement || !lastElement) {
+      event.preventDefault();
+      return;
+    }
+
+    if (!event.currentTarget.contains(document.activeElement)) {
+      event.preventDefault();
+      firstElement.focus();
+    } else if (event.shiftKey && document.activeElement === firstElement) {
+      event.preventDefault();
+      lastElement.focus();
+    } else if (!event.shiftKey && document.activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
+    }
   }
 
   return (
@@ -250,6 +291,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
               <button
                 type="button"
                 className="memory-peek-button"
+                ref={dialogTriggerRef}
                 onClick={() => setDialogOpen(true)}
               >
                 Peek inside <ArrowUpRight size={14} aria-hidden="true" />
@@ -315,6 +357,7 @@ export function InteractiveDemo({ compact = false }: { compact?: boolean }) {
               role="dialog"
               aria-modal="true"
               aria-labelledby="memory-dialog-title"
+              onKeyDown={keepDialogFocus}
               initial={{ opacity: 0, y: 18, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 12, scale: 0.98 }}
